@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+    <link rel='stylesheet' href='/css/common.css' />
+    <link rel='stylesheet' href='/css/master.css' />
+</head>
+<body>
+  <div class="vim-wrap">
+    <% include common/header.ejs %>
+    <section class="vim-body">
+      <div class="vim-container">
+        <div class="vim-list">
+          <div class="vim-items vim-md">
+            <h2 class="h2"><%= title %></h2>
+            <p class="pre-text">Welcome to <%= title %></p>
+          </div>
+          <div class="vim-items vim-md">
+            <h2 class="h2"><%= title %></h2>
+            <p class="pre-text">Welcome to <%= title %></p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <% include common/footer.ejs %>
+  </div>
+</body>
 </html>
