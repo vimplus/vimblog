@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>注册</title>
+    <link rel='stylesheet' href='/css/common.css' />
+    <link rel='stylesheet' href='/css/master.css' />
+</head>
+<body>
+  <div class="vim-wrap">
+    <% include common/header.ejs %>
+    <section class="vim-body">
+      <div class="vim-container">
+        <div class="vim-form-users">
+          <div class="vim-form-title">用户注册</div>
+          <div class="input-field">
+            <label class="input-label">用户名：</label>
+            <input class="input-area xlarge" type="text" placeholder="请输入用户名">
+          </div>
+          <div class="input-field">
+            <label class="input-label">邮箱：</label>
+            <input class="input-area xlarge" type="text" placeholder="请输入邮箱">
+          </div>
+          <div class="input-field">
+            <label class="input-label">密码：</label>
+            <input class="input-area xlarge" type="password" placeholder="请输入密码(8-20位数字和字母)">
+          </div>
+          <div class="vim-btn-box">
+            <input class="btn blockbtn btn-large" type="sbumit" value="立即注册">
+          </div>
+        </div>
+      </div>
+    </section>
+    <% include common/footer.ejs %>
+  </div>
+</body>
+</html>
