@@ -270,7 +270,7 @@ color: #aaa;
 .loading b {display:inline-block; background:url(../images/logining.gif); background-size:12px auto; background-repeat:no-repeat;width:12px;height:12px; margin-right:5px; position:relative; top:2px;}
 /* input */
 .input-field {height: 50px; font-size: 0; -webkit-text-size-adjust:none; line-height: 50px; border-bottom: 1px solid #f1f1f1;}
-.input-label {display: inline-block; width: 80px; padding-left: 10px; padding-right: 5px; font-size: 1.6rem; color: #666; text-align: left;}
+.input-label {display: inline-block; width: 80px; padding-left: 10px; padding-right: 5px; font-size: 1.6rem; color: #666; text-align: right;}
 .input-area {display: inline-block; height: 30px; padding: 2px 5px; font-size: 1.6rem; color: #333; border: 0; outline: 0;}
 .input-label, .input-area, .input-text, .codebtn, .check-field { vertical-align: middle;}
 .input-text {display: inline-block; padding: 0 5px; font-size: 1.6rem;}

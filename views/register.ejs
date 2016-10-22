@@ -10,24 +10,24 @@
     <% include common/header.ejs %>
     <section class="vim-body">
       <div class="vim-container">
-        <div class="vim-form-users">
+        <form class="vim-form-users" method="post">
           <div class="vim-form-title">用户注册</div>
           <div class="input-field">
             <label class="input-label">用户名：</label>
-            <input class="input-area xlarge" type="text" placeholder="请输入用户名">
+            <input class="input-area xlarge" type="text" placeholder="请输入用户名" name="username">
           </div>
           <div class="input-field">
             <label class="input-label">邮箱：</label>
-            <input class="input-area xlarge" type="text" placeholder="请输入邮箱">
+            <input class="input-area xlarge" type="text" placeholder="请输入邮箱" name="email">
           </div>
           <div class="input-field">
             <label class="input-label">密码：</label>
-            <input class="input-area xlarge" type="password" placeholder="请输入密码(8-20位数字和字母)">
+            <input class="input-area xlarge" type="password" placeholder="请输入密码(8-20位数字和字母)" name="password">
           </div>
           <div class="vim-btn-box">
-            <input class="btn blockbtn btn-large" type="sbumit" value="立即注册">
+            <input class="btn blockbtn btn-large" type="submit" value="立即注册">
           </div>
-        </div>
+        </form>
       </div>
     </section>
     <% include common/footer.ejs %>

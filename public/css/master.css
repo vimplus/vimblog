@@ -1,7 +1,6 @@
 /* box */
 .vim-header {
   height: 100px;
-  margin-bottom: 20px;
   background: #fdfdfd;
 }
 .hd-user {
@@ -19,7 +18,9 @@
   font-size: 14px;
   text-align: right;
 }
-
+.vim-body {
+  padding: 20px 0;
+}
 .vim-list {
   min-height: 600px;
   padding: 10px 30px;
