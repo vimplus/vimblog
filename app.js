@@ -9,7 +9,7 @@ var MongoStore = require('connect-mongo')(session);
 
 var routes = require('./routes/index');
 var config = require('./config/config');
-var mongodb = require('./config/db');
+var mongodb = require('./config/mongoose');
 var flash = require('connect-flash');
 
 var db = mongodb();
