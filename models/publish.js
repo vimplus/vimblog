@@ -1,4 +1,5 @@
 var mongodb = require('./db');
+var markdown = require('markdown').markdown;
 
 function Publish(name, title, content) {
   this.name = name;
@@ -70,6 +71,9 @@ Publish.get = function (name, callback) {
         mongodb.close();
         if(err) callback(err);
 
+        docs.forEach(function (doc) {
+          doc.content = markdown.toHTML(doc.content)
+        })
         callback(null, docs); //成功，以数组形式返回查询的结果
       })
 
