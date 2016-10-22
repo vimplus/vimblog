@@ -11,9 +11,11 @@
     <section class="vim-body">
       <div class="vim-container">
         <form class="vim-form-users" method="post">
-          用户名：<input type="text" name="name"/><br />
-          密码：  <input type="password" name="password"/><br />
-         <input type="submit" value="登录"/>
+          标题：<br />
+          <input type="text" name="title" /><br />
+          正文：<br />
+          <textarea name="content" rows="20" cols="100"></textarea><br />
+          <input type="submit" value="发表" />
         </form>
         <% if (success) { %>
           <div><%= success %></div>

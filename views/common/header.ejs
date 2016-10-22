@@ -4,8 +4,13 @@
     <nav class="hd-nav"></nav>
     <div class="hd-user">
       <div class="user-photo"></div>
-      <a href="/login" class="login">登录</a>
-      <a href="/register" class="register">注册</a>
+      <% if (user) { %>
+        <a href="/publish" class="login">发表</a>
+        <a href="/logout" class="register">退出</a>
+      <% } else { %>
+        <a href="/login" class="login">登录</a>
+        <a href="/register" class="register">注册</a>
+      <% } %>
     </div>
   </div>
 </header>

@@ -11,14 +11,13 @@
     <section class="vim-body">
       <div class="vim-container">
         <div class="vim-list">
+          <% articlesList.forEach(function (article, index) { %>
           <div class="vim-items vim-md">
-            <h2 class="h2"><%= title %></h2>
-            <p class="pre-text">Welcome to <%= title %></p>
+            <span><%= article.name %></span>
+            <h2 class="h2"><%= article.title %></h2>
+            <p class="pre-text"><%= article.content %></p>
           </div>
-          <div class="vim-items vim-md">
-            <h2 class="h2"><%= title %></h2>
-            <p class="pre-text">Welcome to <%= title %></p>
-          </div>
+          <% }) %>
         </div>
       </div>
     </section>
