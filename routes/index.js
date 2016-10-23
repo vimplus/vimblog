@@ -194,6 +194,7 @@ module.exports = function (app) {
   });
 
   //获取一篇文章
+  app.get('/edit/:name/:day/:title', checkLogin);
   app.get('/u/:name/:day/:title', function (req, res) {
     Post.getOne(req.params.name, req.params.day, req.params.title, function (err, doc) {
       if (err) {
@@ -211,6 +212,7 @@ module.exports = function (app) {
   })
 
   //定义文章编辑页面路由
+  app.post('/edit/:name/:day/:title', checkLogin);
   app.get('/edit/:name/:day/:title', function (req, res) {
     Post.edit(req.params.name, req.params.day, req.params.title, function (err, doc) {
       if (err) {
@@ -236,6 +238,19 @@ module.exports = function (app) {
       }
       req.flash('success', '修改成功!');
       res.redirect(url);//成功！返回文章页
+    })
+  })
+
+  //删除文章
+  app.get('/remove/:name/:day/:title', checkLogin);
+  app.get('/remove/:name/:day/:title', function (req, res) {
+    Post.remove(req.params.name, req.params.day, req.params.title, function (err) {
+      if (err) {
+        req.flash('error', err);
+        return res.redirect('back');
+      }
+      req.flash('success', '删除成功！');
+      res.redirect('/')
     })
   })
 

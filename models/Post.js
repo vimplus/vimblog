@@ -119,7 +119,7 @@ Post.edit = function (name, day, title, callback) {
         mongodb.close();
         return callback(err);
       }
-      //根据用户名、文章日期、文章标题查询文章
+      //定义查询条件
       var query = {
         "name": name,
         "time.day": day,
@@ -134,7 +134,7 @@ Post.edit = function (name, day, title, callback) {
     })
   })
 }
-
+//更新文章
 Post.update = function (name, day, title, content, callback) {
   mongodb.open(function (err, db) {
     if (err) return callback(err);
@@ -143,7 +143,7 @@ Post.update = function (name, day, title, content, callback) {
         mongodb.close();
         return callback(err);
       }
-      //根据用户名、文章日期、文章标题查询文章
+      //定义查询条件
       var query = {
         "name": name,
         "time.day": day,
@@ -157,5 +157,30 @@ Post.update = function (name, day, title, content, callback) {
         callback(null);
       })
     })
+  })
+}
+
+Post.remove = function (name, day, title, callback) {
+  mongodb.open(function (err, db) {
+    if (err) return callback(err);
+    db.collection('articles', function (err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      //定义查询条件
+      var query = {
+        "name": name,
+        "time.day": day,
+        "title": title
+      }
+      //删除一篇文章
+      collection.remove(query, { w: 1}, function (err) {
+        mongodb.close();
+        if (err) return callback(err);
+        callback(null);
+      })
+    })
+
   })
 }
