@@ -182,7 +182,7 @@ module.exports = function (app) {
         }
 
         res.render('user', {
-          title: user.name.
+          title: user.name,
           articles: list,
           user: req.session.user,
           success: req.flash('success').toString(),
