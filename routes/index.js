@@ -67,7 +67,7 @@ module.exports = function (app) {
       }
       //检查密码是否一致
       if (user.password != password) {
-        res.flash('error', '密码错误！');
+        req.flash('error', '密码错误！');
         return res.redirect('/login');
       }
       //用户名密码都匹配后，将用户信息存入 session
