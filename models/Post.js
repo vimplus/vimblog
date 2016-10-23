@@ -109,3 +109,53 @@ Post.getOne = function (name, day, title, callback) {
 
   })
 }
+
+//获取原始发表的内容（markdown 格式）
+Post.edit = function (name, day, title, callback) {
+  mongodb.open(function (err, db) {
+    if (err) return callback(err);
+    db.collection('articles', function (err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      //根据用户名、文章日期、文章标题查询文章
+      var query = {
+        "name": name,
+        "time.day": day,
+        "title": title
+      }
+      collection.findOne(query, function (err, doc) {
+        mongodb.close();
+        if (err) return callback(err);
+
+        callback(null, doc);
+      })
+    })
+  })
+}
+
+Post.update = function (name, day, title, content, callback) {
+  mongodb.open(function (err, db) {
+    if (err) return callback(err);
+    db.collection('articles', function (err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      //根据用户名、文章日期、文章标题查询文章
+      var query = {
+        "name": name,
+        "time.day": day,
+        "title": title
+      }
+      //更新内容
+      collection.update(query, {$set: {content: content}}, function (err) {
+        mongodb.close();
+        if (err) return callback(err);
+
+        callback(null);
+      })
+    })
+  })
+}

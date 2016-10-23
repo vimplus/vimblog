@@ -148,6 +148,7 @@ module.exports = function (app) {
     })
   })
 
+  //定义上传页面
   app.get('/upload', checkLogin);
   app.get('/upload', function (req, res) {
 
@@ -159,14 +160,14 @@ module.exports = function (app) {
     });
 
   });
-
+  //上传文件post
   app.post('/upload', checkLogin);
   app.post('/upload', upload.array('field', 5), function (req, res) {
     req.flash('success', '文件上传成功！');
     res.redirect('/upload')
   });
 
-
+  //获取用户的所有文章
   app.get('/u/:name', function (req, res) {
     //检测用户名存不存在
     User.get(req.params.name, function (err, user) {
@@ -192,6 +193,7 @@ module.exports = function (app) {
     })
   });
 
+  //获取一篇文章
   app.get('/u/:name/:day/:title', function (req, res) {
     Post.getOne(req.params.name, req.params.day, req.params.title, function (err, doc) {
       if (err) {
@@ -205,6 +207,35 @@ module.exports = function (app) {
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
       });
+    })
+  })
+
+  //定义文章编辑页面路由
+  app.get('/edit/:name/:day/:title', function (req, res) {
+    Post.edit(req.params.name, req.params.day, req.params.title, function (err, doc) {
+      if (err) {
+        req.flash('error', err);
+        return res.redirect('/');
+      }
+      res.render('edit', {
+        title: '编辑 - '+req.params.title,
+        article: doc,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      });
+    })
+  })
+  //编辑文章
+  app.post('/edit/:name/:day/:title', function (req, res) {
+    Post.update(req.params.name, req.params.day, req.params.title, req.body.content, function (err) {
+      var url = encodeURI('/u/' + req.params.name + '/' + req.params.day + '/' + req.params.title);
+      if (err) {
+        req.flash('error', err);
+        return res.redirect(url);//出错！返回文章页
+      }
+      req.flash('success', '修改成功!');
+      res.redirect(url);//成功！返回文章页
     })
   })
 

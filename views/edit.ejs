@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>发表文章</title>
+    <link rel='stylesheet' href='/css/common.css' />
+    <link rel='stylesheet' href='/css/master.css' />
+</head>
+<body>
+  <div class="vim-wrap">
+    <% include common/header.ejs %>
+    <section class="vim-body">
+      <div class="vim-container">
+        <form class="vim-form-users" method="post" action="/edit/<%= article.name %>/<%= article.time.day %>/<%= article.title %>">
+          标题：<br />
+          <input type="text" name="title" value="<%= article.title %>" disabled="disabled" /><br />
+          正文：<br />
+          <textarea name="content" rows="20" cols="100"><%= article.content %></textarea><br />
+          <input type="submit" value="保存" />
+        </form>
+      </div>
+    </section>
+    <% include common/footer.ejs %>
+  </div>
+</body>
+</html>
