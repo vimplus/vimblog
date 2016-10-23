@@ -1,16 +1,45 @@
 //var UserController = require('../app/controllers/user.controller');
 
 var crypto = require('crypto');
+var multer  = require('multer');
 var User = require('../models/user.js');
 var Publish = require('../models/publish.js');
 
+var storage = multer.diskStorage({
+  //上传后的文件所在目录
+  destination: function (req, file, callback) {
+    callback(null, './public/images')
+  },
+  //用来修改上传文件的文件名
+  filename: function functionName(req, file, callback) {
+    callback(null, file.originalname)
+  }
+})
+
+var upload = multer({ storage: storage });
+
+
+function checkLogin(req, res, next) {
+  if(!req.session.user){
+    req.flash('error', '未登录');
+    res.redirect('/login');
+  }
+  next();
+}
+
+function checkNotLogin(req, res, next) {
+  if(req.session.user){
+    res.flash('error', '已登录');
+    res.redirect('back');  //返回之前的页面
+  }
+  next();
+}
 
 /* routes */
 module.exports = function (app) {
   app.get('/', function (req, res) {
-    Publish.get(null, function (err, list) {
+    Publish.getAll(null, function (err, list) {
       if (err) list = [];
-      console.log(list)
       res.render('index', {
         title: '主页',
         user: req.session.user,
@@ -105,7 +134,7 @@ module.exports = function (app) {
         error: req.flash('error').toString()});
   });
 
-  app.post('/publish', checkLogin)
+  app.post('/publish', checkLogin);
   app.post('/publish', function (req, res) {
     var currentUser = req.session.user;
     var article = new Publish(currentUser.name, req.body.title, req.body.content);
@@ -119,20 +148,64 @@ module.exports = function (app) {
     })
   })
 
-  function checkLogin(req, res, next) {
-    if(!req.session.user){
-      req.flash('error', '未登录');
-      res.redirect('/login');
-    }
-    next();
-  }
+  app.get('/upload', checkLogin);
+  app.get('/upload', function (req, res) {
 
-  function checkNotLogin(req, res, next) {
-    if(req.session.user){
-      res.flash('error', '已登录');
-      res.redirect('back');  //返回之前的页面
-    }
-    next();
-  }
+    res.render('upload', {
+      title: '文件上传',
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+
+  });
+
+  app.post('/upload', checkLogin);
+  app.post('/upload', upload.array('field', 5), function (req, res) {
+    req.flash('success', '文件上传成功！');
+    res.redirect('/upload')
+  });
+
+
+  app.get('/u/:name', function (req, res) {
+    //检测用户名存不存在
+    User.get(req.params.name, function (err, user) {
+      if (!user) {
+        req.flash('error', '用户不存在！');
+        return res.redirect('/')
+      }
+
+      Publish.getAll(req.params.name, function (err, list) {
+        if (err) {
+          req.flash('error', err);
+          return res.redirect('/');
+        }
+
+        res.render('user', {
+          title: user.name.
+          articles: list,
+          user: req.session.user,
+          success: req.flash('success').toString(),
+          error: req.flash('error').toString()
+        })
+      });
+    })
+  });
+
+  app.get('/u/:name/:day/:title', function (req, res) {
+    Publish.getOne(req.params.name, req.params.day, req.params.title, function (err, doc) {
+      if (err) {
+        req.flash('error', err);
+        return res.redirect('/');
+      }
+      res.render('article', {
+        title: req.params.title,
+        article: doc,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      });
+    })
+  })
 
 }

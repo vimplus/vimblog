@@ -5,11 +5,12 @@
     <div class="hd-user">
       <div class="user-photo"></div>
       <% if (user) { %>
-        <a href="/publish" class="login">发表</a>
-        <a href="/logout" class="register">退出</a>
+        <a href="/upload" class="option">上传</a>
+        <a href="/publish" class="option">发表</a>
+        <a href="/logout" class="option">退出</a>
       <% } else { %>
-        <a href="/login" class="login">登录</a>
-        <a href="/register" class="register">注册</a>
+        <a href="/login" class="option">登录</a>
+        <a href="/register" class="option">注册</a>
       <% } %>
     </div>
   </div>

@@ -50,11 +50,10 @@ Publish.prototype.save = function (callback) {
   });
 }
 
-//读取文章
-Publish.get = function (name, callback) {
+//获取文章列表
+Publish.getAll = function (name, callback) {
   mongodb.open(function (err, db) {
     if(err) return callback(err);
-    console.log('错误：' + err)
     //读取 articles 集合
     db.collection('articles', function (err, collection) {
       if(err) {
@@ -77,6 +76,35 @@ Publish.get = function (name, callback) {
         callback(null, docs); //成功，以数组形式返回查询的结果
       })
 
+    })
+
+  })
+}
+
+//获取一篇文章
+Publish.getOne = function (name, day, title, callback) {
+  mongodb.open(function (err, db) {
+    if (err) return callback(err);
+
+    db.collection('articles', function (err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      //根据用户名、文章日期、文章标题查询文章
+      var query = {
+        "name": name,
+        "time.day": day,
+        "title": title
+      }
+      collection.findOne(query, function (err, doc) {
+        mongodb.close();
+        if (err) return callback(err);
+
+        doc.content = markdown.toHTML(doc.content);
+        callback(null, doc); //返回查询的文章
+
+      })
     })
 
   })
