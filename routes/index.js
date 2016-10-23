@@ -3,7 +3,7 @@
 var crypto = require('crypto');
 var multer  = require('multer');
 var User = require('../models/user.js');
-var Publish = require('../models/publish.js');
+var Post = require('../models/Post.js');
 
 var storage = multer.diskStorage({
   //上传后的文件所在目录
@@ -38,7 +38,7 @@ function checkNotLogin(req, res, next) {
 /* routes */
 module.exports = function (app) {
   app.get('/', function (req, res) {
-    Publish.getAll(null, function (err, list) {
+    Post.getAll(null, function (err, list) {
       if (err) list = [];
       res.render('index', {
         title: '主页',
@@ -137,7 +137,7 @@ module.exports = function (app) {
   app.post('/publish', checkLogin);
   app.post('/publish', function (req, res) {
     var currentUser = req.session.user;
-    var article = new Publish(currentUser.name, req.body.title, req.body.content);
+    var article = new Post(currentUser.name, req.body.title, req.body.content);
     article.save(function (err) {
       if (err) {
         req.flash('error', err);
@@ -175,7 +175,7 @@ module.exports = function (app) {
         return res.redirect('/')
       }
 
-      Publish.getAll(req.params.name, function (err, list) {
+      Post.getAll(req.params.name, function (err, list) {
         if (err) {
           req.flash('error', err);
           return res.redirect('/');
@@ -193,7 +193,7 @@ module.exports = function (app) {
   });
 
   app.get('/u/:name/:day/:title', function (req, res) {
-    Publish.getOne(req.params.name, req.params.day, req.params.title, function (err, doc) {
+    Post.getOne(req.params.name, req.params.day, req.params.title, function (err, doc) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/');

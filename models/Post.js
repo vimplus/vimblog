@@ -1,15 +1,15 @@
 var mongodb = require('./db');
 var markdown = require('markdown').markdown;
 
-function Publish(name, title, content) {
+function Post(name, title, content) {
   this.name = name;
   this.title = title;
   this.content = content;
 }
 
-module.exports = Publish;
+module.exports = Post;
 
-Publish.prototype.save = function (callback) {
+Post.prototype.save = function (callback) {
   var date = new Date();
   //存储各种时间格式，方便以后扩展
   var time = {
@@ -51,7 +51,7 @@ Publish.prototype.save = function (callback) {
 }
 
 //获取文章列表
-Publish.getAll = function (name, callback) {
+Post.getAll = function (name, callback) {
   mongodb.open(function (err, db) {
     if(err) return callback(err);
     //读取 articles 集合
@@ -82,7 +82,7 @@ Publish.getAll = function (name, callback) {
 }
 
 //获取一篇文章
-Publish.getOne = function (name, day, title, callback) {
+Post.getOne = function (name, day, title, callback) {
   mongodb.open(function (err, db) {
     if (err) return callback(err);
 
