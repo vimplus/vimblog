@@ -14,7 +14,7 @@
           <% articlesList.forEach(function (article, index) { %>
           <div class="vim-items vim-md">
             <span><%= article.name %></span>
-            <h2 class="h2"><a href="u/<%= article.name %>/<%= article.time.day %>/<%= article.title %>"><%= article.title %></a></h2>
+            <h2 class="h2"><a href="<%= article.name %>/<%= article.time.day %>/<%= article.title %>"><%= article.title %></a></h2>
             <p class="pre-text"><%- article.content %></p>
           </div>
           <% }) %>

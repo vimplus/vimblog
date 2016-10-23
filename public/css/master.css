@@ -43,6 +43,9 @@
   font-size: 12px;
   color: #999;
 }
+.vim-info {
+  min-height: 600px;
+}
 
 /* login and regist */
 .vim-form-users {

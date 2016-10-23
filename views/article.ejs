@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>登录</title>
+    <link rel='stylesheet' href='/css/common.css' />
+    <link rel='stylesheet' href='/css/master.css' />
+</head>
+<body>
+  <div class="vim-wrap">
+    <% include common/header.ejs %>
+    <section class="vim-body">
+      <div class="vim-container">
+        <div class="vim-info">
+          作者：<a href="/u/<%= article.name %>"><%= article.name %></a> | 日期：<%= article.time.minute %>
+          <div class="vim-info-detail"><%- article.content %></div>
+        </div>
+      </div>
+    </section>
+    <% include common/footer.ejs %>
+  </div>
+</body>
+</html>
