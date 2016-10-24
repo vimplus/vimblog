@@ -65,3 +65,73 @@
   padding-top: 30px;
   text-align: center;
 }
+
+/* page style */
+.vim-page-box {
+  padding: 20px;
+  text-align: center;
+}
+.vim-page {
+  display: inline-block;
+}
+.vim-page .page-option,
+.vim-page .page-label {
+  float: left;
+}
+.vim-page .page-option {
+  margin-right: 10px;
+  line-height: 28px;
+  color: #666;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid rgba(45, 183, 245, 1);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.vim-page .page-option a {
+  color: #666;
+}
+
+.vim-page .page-number {
+  width: 28px;
+  height: 30px;
+  line-height: 30px;
+}
+
+.vim-page .page-pre,
+.vim-page .page-next {
+  position: relative;
+  width: 60px;
+  background: rgba(45, 183, 245, 1);
+  border-bottom: 3px solid rgba(0, 160, 233, 1);
+}
+.vim-page .page-pre:hover,
+.vim-page .page-next:hover {
+  background: rgba(45, 183, 245, 0.8);
+  border-color: rgba(45, 183, 245, 0.6);
+  border-bottom-color: rgba(0, 160, 233, 0.8);
+}
+.vim-page .page-pre:active,
+.vim-page .page-next:active {
+  top: 3px;
+  border-bottom-width: 0;
+}
+.vim-page .page-pre a,
+.vim-page .page-next a {
+  color: #fff;
+}
+
+.vim-page .page-active {
+  background-color: #2db7f5;
+  border-color: #2db7f5;
+}
+.vim-page .page-active a {
+  color: #fff;
+}
+
+.vim-page .page-label {
+  padding: 0 30px 0 20px;
+  line-height: 30px;
+  color: #666;
+}

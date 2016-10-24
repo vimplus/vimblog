@@ -1,0 +1,11 @@
+<div class="vim-page-box">
+  <div class="vim-page">
+    <% if (!isFirstPage) { %>
+    <span class="page-option page-pre" title="上一页"><a href="?page=<%= page-1 %>">上一页</a></span>
+    <% } %>
+    <!--<span class="page-label">第1页 / 共10页</span>-->
+    <% if (!isLastPage) { %>
+    <span class="page-option page-next" title="下一页"><a href="?page=<%= page+1 %>">下一页</a></span>
+    <% } %>
+  </div>
+</div>

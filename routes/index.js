@@ -39,12 +39,18 @@ function checkNotLogin(req, res, next) {
 /* routes */
 module.exports = function (app) {
   app.get('/', function (req, res) {
-    Post.getAll(null, function (err, list) {
+    //判断是否是第一页，并把请求的页数转换成 number 类型
+    var page = parseInt(req.query.page, 10) || 1;
+    //查询并返回第 page 页的 10 篇文章
+    Post.getList(null, page, function (err, list, total) {
       if (err) list = [];
       res.render('index', {
         title: '主页',
         user: req.session.user,
         articlesList: list,
+        page: page,
+        isFirstPage: (page - 1) == 0,
+        isLastPage: ((page - 1) * 10 + list.length) == total,
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
       });
@@ -170,6 +176,7 @@ module.exports = function (app) {
 
   //获取用户的所有文章
   app.get('/u/:name', function (req, res) {
+    var page = parseInt(req.query.page, 10) || 1;
     //检测用户名存不存在
     User.get(req.params.name, function (err, user) {
       if (!user) {
@@ -177,15 +184,17 @@ module.exports = function (app) {
         return res.redirect('/')
       }
 
-      Post.getAll(req.params.name, function (err, list) {
+      Post.getList(req.params.name, page, function (err, list, total) {
         if (err) {
           req.flash('error', err);
           return res.redirect('/');
         }
-
         res.render('user', {
           title: user.name,
           articlesList: list,
+          page: page,
+          isFirstPage: (page - 1) == 0,
+          isLastPage: ((page - 1) * 10 + list.length) == total,
           user: req.session.user,
           success: req.flash('success').toString(),
           error: req.flash('error').toString()

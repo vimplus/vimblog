@@ -52,7 +52,7 @@ Post.prototype.save = function (callback) {
 }
 
 //获取文章列表
-Post.getAll = function (name, callback) {
+Post.getList = function (name, page, callback) {
   mongodb.open(function (err, db) {
     if(err) return callback(err);
     //读取 articles 集合
@@ -64,23 +64,28 @@ Post.getAll = function (name, callback) {
       var query = {};
       if (name) { query.name = name}
 
-      //根据 query 对象查询文章；
-      collection.find(query)
-        .sort({time: -1})
-        .toArray(function (err, docs) {
-        mongodb.close();
-        if(err) callback(err);
+      //使用 count 返回特定查询的文档数 total
+      collection.count(query, function (err, total) {
+        //根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的 10 个结果
+        collection.find(query, {skip: (page - 1)*10, limit: 10})
+          .sort({time: -1})
+          .toArray(function (err, docs) {
+          mongodb.close();
+          if(err) callback(err);
 
-        docs.forEach(function (doc) {
-          if (doc) {
-            doc.content = markdown.toHTML(doc.content)
-            doc.comments.forEach(function (comment) {
-              comment.content = markdown.toHTML(comment.content)
-            })
-          }
+          docs.forEach(function (doc) {
+            if (doc) {
+              doc.content = markdown.toHTML(doc.content)
+              doc.comments.forEach(function (comment) {
+                comment.content = markdown.toHTML(comment.content)
+              })
+            }
+          })
+          callback(null, docs, total); //成功，以数组形式返回查询的结果
         })
-        callback(null, docs); //成功，以数组形式返回查询的结果
       })
+      //根据 query 对象查询文章；
+
 
     })
 
