@@ -25,20 +25,27 @@ input,select,button,textarea
 {
     font:12px/1.5 Microsoft Yahei,微软雅黑,Simsun,宋体,tahoma,sans-serif,arial,\5b8b\4f53;
 }
-body { position: relative; height: 100%; color: #222; background: #f2f2f2;}
+body { position: relative; height: 100%; color: #333; background: #f2f2f2;}
 input,select,textarea{
   font-size:100%;
 }
 a {
-  color: #2db7f5;
+  color: #555;
   text-decoration: none;
+  transition: all 0.3s ease;
 }
 a:hover {
-  color: #57c5f7;
+  color: #000;
   text-decoration: none;
 }
 a:active {
     background-color: transparent;
+}
+.blue-link {
+  color: #2db7f5;
+}
+.blue-link:hover {
+  color: #57c5f7;
 }
 ul, ol {
     list-style-type: none;

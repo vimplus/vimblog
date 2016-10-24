@@ -4,6 +4,7 @@ var crypto = require('crypto');
 var multer  = require('multer');
 var User = require('../models/user.js');
 var Post = require('../models/Post.js');
+var Comment = require('../models/comment.js');
 
 var storage = multer.diskStorage({
   //上传后的文件所在目录
@@ -208,6 +209,28 @@ module.exports = function (app) {
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
       });
+    })
+  })
+  //提交留言
+  app.post('/u/:name/:day/:title', function (req, res) {
+    var date = new Date();
+    var time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +
+             date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+    var comment = {
+      name: req.body.name,
+      email: req.body.email,
+      website: req.body.website,
+      time: time,
+      content: req.body.content
+    }
+    var newComment = new Comment(req.params.name, req.params.day, req.params.title, comment);
+    newComment.save(function (err) {
+      if (err) {
+        req.flash('error', err);
+        return res.redirect('back');
+      }
+      req.flash('success', '留言成功!');
+      res.redirect('back');
     })
   })
 

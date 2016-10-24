@@ -25,7 +25,8 @@ Post.prototype.save = function (callback) {
     name: this.name,
     time: time,
     title: this.title,
-    content: this.content
+    content: this.content,
+    comments: []
   }
 
   //打开数据库
@@ -71,7 +72,12 @@ Post.getAll = function (name, callback) {
         if(err) callback(err);
 
         docs.forEach(function (doc) {
-          doc.content = markdown.toHTML(doc.content)
+          if (doc) {
+            doc.content = markdown.toHTML(doc.content)
+            doc.comments.forEach(function (comment) {
+              comment.content = markdown.toHTML(comment.content)
+            })
+          }
         })
         callback(null, docs); //成功，以数组形式返回查询的结果
       })
