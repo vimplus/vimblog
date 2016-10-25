@@ -47,6 +47,12 @@ a:active {
 .blue-link:hover {
   color: #57c5f7;
 }
+.red-link {
+  color: rgb(224, 21, 21);
+}
+.red-link:hover {
+  color: rgb(255, 56, 88);
+}
 ul, ol {
     list-style-type: none;
     list-style-image: none;

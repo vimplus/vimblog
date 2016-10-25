@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/common.css' />
+    <link rel='stylesheet' href='/css/master.css' />
+</head>
+<body>
+  <div class="vim-wrap">
+    <% include common/header.ejs %>
+    <section class="vim-body">
+      <div class="vim-container">
+        <div class="vim-list">
+          <% articleList.forEach(function (article, index) { %>
+          <div class="vim-items vim-md">
+            <span><%= article.name %></span>
+            <h2 class="h2"><a href="<%= article.name %>/<%= article.time.day %>/<%= article.title %>"><%= article.title %></a></h2>
+            <p class="pre-text"><%- article.content %></p>
+          </div>
+          <% }) %>
+        </div>
+        <%- include common/paging.ejs %>
+      </div>
+    </section>
+    <% include common/footer.ejs %>
+  </div>
+</body>
+</html>

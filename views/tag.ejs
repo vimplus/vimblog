@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/common.css' />
+    <link rel='stylesheet' href='/css/master.css' />
+</head>
+<body>
+  <div class="vim-wrap">
+    <% include common/header.ejs %>
+    <section class="vim-body">
+      <div class="vim-container">
+        <div class="vim-list">
+          <% var lastYear = 0 %>
+          <ul class="archive">
+            <% articleList.forEach( function(article, index) { %>
+              <% if (lastYear != article.time.year) { %>
+              <li><h3><%= article.time.year %>年</h3></li>
+              <% lastYear = article.time.year %>
+              <% } %>
+              <li><span class="article-time"><%= article.time.day %></span><a class="blue-link" href="/u/<%= article.name %>/<%= article.time.day %>/<%= article.title %>"><%= article.title %></a></li>
+            <% }) %>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <% include common/footer.ejs %>
+  </div>
+</body>
+</html>

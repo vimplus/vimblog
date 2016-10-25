@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>发表文章</title>
+    <link rel='stylesheet' href='/css/common.css' />
+    <link rel='stylesheet' href='/css/master.css' />
+</head>
+<body>
+  <div class="vim-wrap">
+    <% include common/header.ejs %>
+    <section class="vim-body">
+      <div class="vim-container">
+        <div class="vim-list">
+          <div class="tag-box">
+            <% tags.forEach(function (tag, index) { %>
+              <a class="tag" href="/tags/<%= tag %>"><%= tag %></a>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+    </section>
+    <% include common/footer.ejs %>
+  </div>
+</body>
+</html>

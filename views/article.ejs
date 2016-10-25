@@ -10,14 +10,26 @@
     <% include common/header.ejs %>
     <section class="vim-body">
       <div class="vim-container">
-        <div class="vim-info">
-          作者：<a href="/u/<%= article.name %>"><%= article.name %></a> | 日期：<%= article.time.minute %>
-          <% if (user && (user.name == article.name)) {%>
-          <span><a class="edit" href="/edit/<%= article.name %>/<%= article.time.day %>/<%= article.title %>">编辑</a></span>
-          <span><a class="edit" href="/remove/<%= article.name %>/<%= article.time.day %>/<%= article.title %>">删除</a></span>
-          <% } %>
-          <div class="vim-info-detail"><%- article.content %></div>
+        <div class="article">
+          <h1><%= article.title %></h1>
+          <div class="article-info">
+            作者：<a href="/u/<%= article.name %>"><%= article.name %></a> | 日期：<%= article.time.minute %>
+            标签：
+            <% article.tags.forEach(function (tag, index) { %>
+              <% if (tag) { %>
+                <a class="article-tag" href="/tags/<%= tag %>"><%= tag %></a>
+              <% } %>
+            <% }) %>
+            <% if (user && (user.name == article.name)) {%>
+            <span><a class="article-edit blue-link" href="/edit/<%= article.name %>/<%= article.time.day %>/<%= article.title %>">编辑</a></span>
+            <span><a class="article-edit red-link" href="/remove/<%= article.name %>/<%= article.time.day %>/<%= article.title %>">删除</a></span>
+            <% } %>
+          </div>
+          <div class="article-content">
+            <%- article.content %>
+          </div>
         </div>
+
         <%- include common/comment.ejs %>
       </div>
     </section>

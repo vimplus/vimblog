@@ -145,7 +145,8 @@ module.exports = function (app) {
   app.post('/publish', checkLogin);
   app.post('/publish', function (req, res) {
     var currentUser = req.session.user;
-    var article = new Post(currentUser.name, req.body.title, req.body.content);
+    var tags = [req.body.tag1, req.body.tag2, req.body.tag3];
+    var article = new Post(currentUser.name, req.body.title, tags, req.body.content);
     article.save(function (err) {
       if (err) {
         req.flash('error', err);
@@ -287,7 +288,7 @@ module.exports = function (app) {
       res.redirect('/')
     })
   })
-
+  //归档
   app.get('/archive', function (req, res) {
     Post.getArchive(function (err, list) {
       if (err) {
@@ -302,6 +303,39 @@ module.exports = function (app) {
         error: req.flash('error').toString()
       })
     })
+  });
+  //标签页
+  app.get('/tags', function (req, res) {
+    Post.getTags(function (err, docs) {
+      if (err) {
+        req.flash('error', err);
+        return res.redirect('/');
+      }
+      res.render('tags', {
+        title: '归档',
+        tags: docs,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      })
+    })
   })
+  //通过标签获取
+  app.get('/tags/:tag', function (req, res) {
+    Post.getListByTag(req.params.tag, function (err, list) {
+      if (err) {
+        req.flash('error', err);
+        return res.redirect('/');
+      }
+      res.render('tag', {
+        title: 'Tag:' + req.params.tag,
+        articleList: list,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      })
+    });
+  });
+
 
 }
