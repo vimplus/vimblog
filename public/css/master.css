@@ -119,6 +119,9 @@
 }
 .vim-page .page-pre a,
 .vim-page .page-next a {
+  display: inline-block;
+  width: 60px;
+  line-height: 28px;
   color: #fff;
 }
 
