@@ -47,7 +47,7 @@ module.exports = function (app) {
       res.render('index', {
         title: '主页',
         user: req.session.user,
-        articlesList: list,
+        articleList: list,
         page: page,
         pageNumer: Math.ceil(total / 10),
         isFirstPage: (page - 1) == 0,
@@ -192,7 +192,7 @@ module.exports = function (app) {
         }
         res.render('user', {
           title: user.name,
-          articlesList: list,
+          articleList: list,
           page: page,
           pageNumer: Math.ceil(total / 10),
           isFirstPage: (page - 1) == 0,
@@ -285,6 +285,22 @@ module.exports = function (app) {
       }
       req.flash('success', '删除成功！');
       res.redirect('/')
+    })
+  })
+
+  app.get('/archive', function (req, res) {
+    Post.getArchive(function (err, list) {
+      if (err) {
+        req.flash('error', err);
+        return res.redirect('/');
+      }
+      res.render('archive', {
+        title: '归档',
+        articleList: list,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      })
     })
   })
 

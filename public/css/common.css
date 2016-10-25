@@ -32,7 +32,7 @@ input,select,textarea{
 a {
   color: #555;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s linear;
 }
 a:hover {
   color: #000;

@@ -1,16 +1,24 @@
 <header class="vim-header">
   <div class="vim-container">
-    <div class="hd-logo"></div>
-    <nav class="hd-nav"></nav>
+    <div class="hd-logo">VimBlog</div>
+    <nav class="hd-nav">
+      <ul>
+        <li><a href="/">首 页</a></li>
+        <li><a href="/?page=1">文 章</a></li>
+        <li><a href="/archive">存 档</a></li>
+      </ul>
+    </nav>
     <div class="hd-user">
       <div class="user-photo"></div>
+
       <% if (user) { %>
-        <a class="option blue-link" href="/upload">上传</a>
-        <a class="option blue-link" href="/publish">发表</a>
-        <a class="option blue-link" href="/logout">退出</a>
+      <span class="username"><%= user.name %></span>
+      <a class="option blue-link" href="/upload">上传</a>
+      <a class="option blue-link" href="/publish">发表</a>
+      <a class="option blue-link" href="/logout">退出</a>
       <% } else { %>
-        <a class="option blue-link" href="/login">登录</a>
-        <a class="option blue-link" href="/register">注册</a>
+      <a class="option blue-link" href="/login">登录</a>
+      <a class="option blue-link" href="/register">注册</a>
       <% } %>
     </div>
   </div>

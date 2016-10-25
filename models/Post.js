@@ -170,7 +170,7 @@ Post.update = function (name, day, title, content, callback) {
     })
   })
 }
-
+//删除文章
 Post.remove = function (name, day, title, callback) {
   mongodb.open(function (err, db) {
     if (err) return callback(err);
@@ -193,5 +193,30 @@ Post.remove = function (name, day, title, callback) {
       })
     })
 
+  })
+}
+
+//返回所有文章存档信息
+Post.getArchive = function (callback) {
+  mongodb.open(function (err, db) {
+    if (err) return callback(err);
+    db.collection('articles', function (err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      //只查询包含 name、time、title 属性的文档组成的存档数组
+      var filter = {
+        "name": 1,
+        "time": 1,
+        "title": 1
+      }
+      collection.find({}, filter)
+        .sort({ time: -1 }).toArray(function (err, docs) {
+          mongodb.close();
+          if (err) return callback(err);
+          callback(null, docs);
+        })
+    })
   })
 }
