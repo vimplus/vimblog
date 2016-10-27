@@ -33,7 +33,11 @@
   color: #fff;
   background: rgb(45, 183, 245);
 }
-
+.hd-search {
+  float: right;
+  padding-top: 45px;
+  margin-right: 20px;
+}
 .hd-user {
   float: right;
   width: 200px;

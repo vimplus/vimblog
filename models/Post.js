@@ -272,9 +272,34 @@ Post.getListByTag = function (tag, callback) {
       }
       collection.find({"tags": tag}, filter)
         .sort({time: -1}).toArray(function (err, docs) {
-          mongodb.close()
+          mongodb.close();
           if(err) return callback(null);
           callback(null, docs);
+        })
+    })
+  })
+}
+
+//返回通过标题关键字查询的所有文章信息
+Post.search = function (keyword, callback) {
+  mongodb.open(function (err, db) {
+    if (err) return callback(err);
+    db.collection('articles', function (err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      var pattern = new RegExp(keyword, "i");
+      var filter = {
+        "name": 1,
+        "time": 1,
+        "title": 1
+      }
+      collection.find({"title": pattern}, filter)
+        .sort({time: -1}).toArray(function (err, list) {
+          mongodb.close();
+          if (err) return callback(null);
+          callback(null, list);
         })
     })
   })

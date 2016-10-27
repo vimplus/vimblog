@@ -338,4 +338,21 @@ module.exports = function (app) {
   });
 
 
+  app.get('/search', function (req, res) {
+    Post.search(req.query.keyword, function (err, list) {
+      if (err) {
+        req.flash('error', err);
+        return res.redirect('/');
+      }
+      res.render('search', {
+        title: '搜索:' + req.query.keyword,
+        articleList: list,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      })
+    })
+  })
+
+
 }
