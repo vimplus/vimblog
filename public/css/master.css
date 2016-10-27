@@ -57,6 +57,12 @@
 .vim-body {
   padding: 20px 0;
 }
+.no-content {
+  min-height: 600px;
+  font-size: 14px;
+  line-height: 100px;
+  text-align: center;
+}
 .vim-list {
   min-height: 600px;
   padding: 10px 30px;
