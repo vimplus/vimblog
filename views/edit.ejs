@@ -14,9 +14,9 @@
           标题：<br />
           <input type="text" name="title" value="<%= article.title %>" disabled="disabled" /><br />
           标签：<br />
-          <input type="text" name="tag1" value="<%= post.tags[0] %>" disabled="disabled" />
-          <input type="text" name="tag2" value="<%= post.tags[1] %>" disabled="disabled" />
-          <input type="text" name="tag3" value="<%= post.tags[2] %>" disabled="disabled" /><br />
+          <input type="text" name="tag1" value="<%= article.tags[0] %>" disabled="disabled" />
+          <input type="text" name="tag2" value="<%= article.tags[1] %>" disabled="disabled" />
+          <input type="text" name="tag3" value="<%= article.tags[2] %>" disabled="disabled" /><br />
           正文：<br />
           <textarea name="content" rows="20" cols="100"><%= article.content %></textarea><br />
           <input type="submit" value="保存" />

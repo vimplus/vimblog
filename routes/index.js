@@ -312,7 +312,7 @@ module.exports = function (app) {
         return res.redirect('/');
       }
       res.render('tags', {
-        title: '归档',
+        title: '标签',
         tags: docs,
         user: req.session.user,
         success: req.flash('success').toString(),

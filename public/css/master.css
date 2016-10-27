@@ -56,8 +56,6 @@
 .vim-list {
   min-height: 600px;
   padding: 10px 30px;
-  background: #fff;
-  border-radius: 3px;
 }
 .vim-list .vim-items {
   padding: 10px 0 20px;

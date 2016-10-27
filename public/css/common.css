@@ -185,6 +185,7 @@ color: #aaa;
 .vim-container {
   margin: 0 auto;
   background: #fff;
+  border-radius: 4px;
 }
 .content {margin: 0 5px;}
 .contbox, .bluebox {padding: 10px; margin-bottom: 10px; font-size: 1.4rem; color: #333;}
@@ -394,5 +395,4 @@ button[disabled] { color: #aaa;}
 @media (min-device-width : 414px) and (max-device-width : 736px) and (-webkit-min-device-pixel-ratio : 3){
     .small {width: 140px;}
     .btn { padding: 10px;}
-
 }

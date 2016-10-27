@@ -16,6 +16,7 @@
             <span><%= article.name %></span>
             <h2 class="h2"><a href="/u/<%= article.name %>/<%= article.time.day %>/<%= article.title %>"><%= article.title %></a></h2>
             <p class="pre-text"><%- article.content %></p>
+            <p class="info">阅读：<%= article.pageview %> | 评论：<%= article.comments.length %></p>
           </div>
           <% }) %>
         </div>

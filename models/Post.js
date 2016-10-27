@@ -28,7 +28,8 @@ Post.prototype.save = function (callback) {
     title: this.title,
     tags: this.tags,
     content: this.content,
-    comments: []
+    comments: [],
+    pageview: 0
   }
 
   //打开数据库
@@ -111,10 +112,22 @@ Post.getOne = function (name, day, title, callback) {
         "title": title
       }
       collection.findOne(query, function (err, doc) {
-        mongodb.close();
-        if (err) return callback(err);
-
+        if (err) {
+          mongodb.close();
+          return callback(err);
+        }
+        if (doc) {
+          collection.update(query, {$inc: {"pageview": 1}}, function (err) {
+            mongodb.close();
+            if (err) {
+              return callback(err);
+            }
+          })
+        }
         doc.content = markdown.toHTML(doc.content);
+        doc.comments.forEach(function (comment) {
+          comment.content = markdown.toHTML(comment.content);
+        })
         callback(null, doc); //返回查询的文章
 
       })

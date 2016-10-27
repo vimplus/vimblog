@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>登录</title>
+    <title><%= article.title %></title>
     <link rel='stylesheet' href='/css/common.css' />
     <link rel='stylesheet' href='/css/master.css' />
 </head>
@@ -20,6 +20,7 @@
                 <a class="article-tag" href="/tags/<%= tag %>"><%= tag %></a>
               <% } %>
             <% }) %>
+            阅读：<%= article.pageview %> | 评论：<%= article.comments.length %>
             <% if (user && (user.name == article.name)) {%>
             <span><a class="article-edit blue-link" href="/edit/<%= article.name %>/<%= article.time.day %>/<%= article.title %>">编辑</a></span>
             <span><a class="article-edit red-link" href="/remove/<%= article.name %>/<%= article.time.day %>/<%= article.title %>">删除</a></span>
