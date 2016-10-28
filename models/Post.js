@@ -1,8 +1,9 @@
 var mongodb = require('./db');
 var markdown = require('markdown').markdown;
 
-function Post(name, title, tags, content) {
+function Post(name, avatar, title, tags, content) {
   this.name = name;
+  this.avatar = avatar;
   this.title = title;
   this.tags = tags;
   this.content = content;
@@ -24,6 +25,7 @@ Post.prototype.save = function (callback) {
 
   var article = {
     name: this.name,
+    avatar: this.avatar,
     time: time,
     title: this.title,
     tags: this.tags,

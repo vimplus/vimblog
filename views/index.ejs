@@ -13,7 +13,7 @@
         <div class="vim-list">
           <% articleList.forEach(function (article, index) { %>
           <div class="vim-items vim-md">
-            <span><%= article.name %></span>
+            <span><%= article.name %></span><a href="/u/<%= article.name %>"><img class="user-avatar" src="<%= article.avatar %>"/></a>
             <h2 class="h2"><a href="/u/<%= article.name %>/<%= article.time.day %>/<%= article.title %>"><%= article.title %></a></h2>
             <p class="pre-text"><%- article.content %></p>
             <p class="info">阅读：<%= article.pageview %> | 评论：<%= article.comments.length %></p>

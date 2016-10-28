@@ -99,10 +99,15 @@ module.exports = function (app) {
     //生成密码的 md5 值
     var md5 = crypto.createHash('md5');
     var password = md5.update(req.body.password).digest('hex');
+    var Md5 = crypto.createHash('md5');
+    var emailMD5 = Md5.update(req.body.email.toLowerCase()).digest('hex');
+    var avatar = 'http://www.gravatar.com/avatar/' + emailMD5 + '?s=48';
+
     var newUser = new User({
         name: name,
         password: password,
-        email: req.body.email
+        email: req.body.email,
+        avatar: avatar
     });
     //检查用户名是否已经存在
     User.get(newUser.name, function (err, user) {
@@ -145,8 +150,9 @@ module.exports = function (app) {
   app.post('/publish', checkLogin);
   app.post('/publish', function (req, res) {
     var currentUser = req.session.user;
+    console.log(currentUser)
     var tags = [req.body.tag1, req.body.tag2, req.body.tag3];
-    var article = new Post(currentUser.name, req.body.title, tags, req.body.content);
+    var article = new Post(currentUser.name, currentUser.avatar, req.body.title, tags, req.body.content);
     article.save(function (err) {
       if (err) {
         req.flash('error', err);
@@ -228,8 +234,12 @@ module.exports = function (app) {
     var date = new Date();
     var time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +
              date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+    var md5 = crypto.createHash('md5');
+    var emailMD5 = md5.update(req.body.email.toLowerCase()).digest('hex');
+    var avatar = 'http://www.gravatar.com/avatar/' + emailMD5 + '?s=48';
     var comment = {
       name: req.body.name,
+      avatar: avatar,
       email: req.body.email,
       website: req.body.website,
       time: time,

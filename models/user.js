@@ -1,9 +1,11 @@
+var crypto = require('crypto');
 var mongodb = require('./db');
 
 function User(user) {
   this.name = user.name;
   this.password = user.password;
   this.email = user.email;
+  this.avatar = user.avatar;
 };
 
 //存储用户信息
@@ -12,7 +14,8 @@ User.prototype.save = function(callback) {
   var user = {
       name: this.name,
       password: this.password,
-      email: this.email
+      email: this.email,
+      avatar: this.avatar
   };
   //打开数据库
   mongodb.open(function (err, db) {

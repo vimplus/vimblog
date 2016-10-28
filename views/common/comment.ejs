@@ -1,6 +1,6 @@
 <% if (article && article.comments) { %>
   <% article.comments.forEach(function (comment, index) { %>
-    <p><a href="<%= comment.website %>"><%= comment.name %></a>
+    <p><img class="user-avatar" src="<%= comment.avatar %>"/><a href="<%= comment.website %>"><%= comment.name %></a>
     <span class="info"> 回复于 <%= comment.time %></span></p>
     <p><%- comment.content %></p>
   <% }) %>

@@ -34,17 +34,17 @@ var UserSchema = new Schema({
         enum: [1, 2, 3],
         default: 3
     },
-    phone_no: String,
+    phoneNo: String,
     accessToken: String,
     avatar: String,
     location: String,
     url: String,
     signature: String,
-    created_at: {
+    createTime: {
         type: Date,
         default: Date.now
     },
-    updated_at: Date
+    updateTime: Date
 })
 UserSchema.set('autoIndex', false);
 // on every save, add the date
