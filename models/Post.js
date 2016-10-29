@@ -31,6 +31,7 @@ Post.prototype.save = function (callback) {
     tags: this.tags,
     content: this.content,
     comments: [],
+    reprintInfo: {},
     pageview: 0
   }
 
@@ -305,4 +306,80 @@ Post.search = function (keyword, callback) {
         })
     })
   })
+}
+
+
+//转载一篇文章
+Post.reprint = function (reprintFrom, reprintTo, callback) {
+  mongodb.open(function (err, db) {
+    if (err) return callback(err);
+    db.collection('articles', function (err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      var queryComer = {
+        "name": reprintFrom.name,
+        "time.day": reprintFrom.day,
+        "title": reprintFrom.title,
+      }
+      //找到被转载的文章的原文档
+      collection.findOne(queryComer, function (err, doc) {
+        if (err) {
+          mongodb.close();
+          return callback(err);
+        }
+        var date = new Date();
+        var time = {
+            date: date,
+            year : date.getFullYear(),
+            month : date.getFullYear() + "-" + (date.getMonth() + 1),
+            day : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
+            minute : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +
+            date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
+        }
+
+        delete doc._id; //一定要删除原来文章的id
+
+        var article = Object.assign({}, doc);
+        article = {
+          name: reprintTo.name,
+          avatar: reprintTo.avatar,
+          time: doc.time,
+          title: (doc.title.search(/[转载]/) > -1) ? doc.title : '[转载]' + doc.title,
+          tags: ["转载"],
+          content: doc.content,
+          comments: [],
+          reprintInfo: {
+            reprintFrom: reprintFrom
+          },
+          pageview: 0
+        }
+
+        var newInfo = {
+          "name": doc.name,
+          "day": time.day,
+          "title": doc.title
+        }
+
+        //更新被转载的原文档的 reprintInfo 内的 reprintTo
+        collection.update(queryComer, {$push: {"reprintInfo.reprintTo": newInfo}}, function (err) {
+          if (err) {
+            mongodb.close();
+            return callback(err);
+          }
+        });
+
+        //将转载生成的副本修改后存入数据库，并返回储存后的文档
+        collection.insert(article, {safe: true}, function (err, res) {
+          mongodb.close();
+          if (err) return callback(err);
+          console.log(res)
+          callback(null, res.ops[0]);
+        });
+      })
+
+    })
+  });
+
 }

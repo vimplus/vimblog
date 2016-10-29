@@ -298,6 +298,40 @@ module.exports = function (app) {
       res.redirect('/')
     })
   })
+  //转载文章
+  app.get('/reprint/:name/:day/:title', checkLogin);
+  app.get('/reprint/:name/:day/:title', function (req, res, callback) {
+    //我们需要通过Post.edit返回一篇文章的markdown格式的文本
+    Post.edit(req.params.name, req.params.day, req.params.title, function (err, article) {
+      if (err) {
+        req.flash('error', err);
+        return res.redirect(back);
+      }
+      var currentUser = req.session.user;
+      var reprintFrom = {
+        name: article.name,
+        day: article.time.day,
+        title: article.title,
+      }
+      var reprintTo = {
+        name: currentUser.name,
+        avatar: currentUser.avatar
+      }
+      Post.reprint(reprintFrom, reprintTo, function (err, doc) {
+        if (err) {
+          req.flash('error', err);
+          return res.redirect('back');
+        }
+        console.log(doc)
+        req.flash('success', '转载成功!');
+        var url = encodeURI('/u/' + doc.name + '/' + doc.time.day + '/' + doc.title);
+        //转载后跳转到当前的文档
+        res.redirect(url);
+      })
+
+    })
+  });
+
   //归档
   app.get('/archive', function (req, res) {
     Post.getArchive(function (err, list) {
