@@ -322,7 +322,6 @@ module.exports = function (app) {
           req.flash('error', err);
           return res.redirect('back');
         }
-        console.log(doc)
         req.flash('success', '转载成功!');
         var url = encodeURI('/u/' + doc.name + '/' + doc.time.day + '/' + doc.title);
         //转载后跳转到当前的文档

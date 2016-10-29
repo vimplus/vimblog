@@ -16,6 +16,16 @@
             <span><%= article.name %></span>
             <h2 class="h2"><a href="<%= article.name %>/<%= article.time.day %>/<%= article.title %>"><%= article.title %></a></h2>
             <p class="pre-text"><%- article.content %></p>
+            <p class="info">
+              阅读：<%= article.pageview %> |
+              评论：<%= article.comments.length %>
+              转载：
+              <% if (article.reprintInfo.reprintTo) { %>
+                <%= article.reprintInfo.reprintTo.length %>
+              <% } else { %>
+                <%= 0 %>
+              <% } %>
+            </p>
           </div>
           <% }) %>
         </div>

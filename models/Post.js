@@ -203,6 +203,38 @@ Post.remove = function (name, day, title, callback) {
         "time.day": day,
         "title": title
       }
+      //查询要删除的文档
+      collection.findOne(query, function (err, doc) {
+        if (err) {
+          mongodb.close();
+          return callback(err);
+        }
+        //如果有 reprintFrom，说明该文章是转载来的，先保存下来 reprintFrom
+        if (doc.reprintInfo.reprintFrom) {
+          var reprintFrom = doc.reprintInfo.reprintFrom;
+        }
+        if (reprintFrom) {
+          //更新原文章所在文档的 reprintTo
+          //更新参数
+          var upParams = {
+            "name": reprintFrom.name,
+            "time.day": reprintFrom.day,
+            "title": reprintFrom.title
+          }
+          //移除原文章转载信息的参数
+          var pullParams = {
+            "name": reprintFrom.name,
+            "day": day,
+            "title": reprintFrom.title
+          }
+          collection.update(upParams, {$pull: {"reprintInfo.reprintTo": pullParams}}, function (err) {
+            if (err) {
+              mongodb.close();
+              return callback(err);
+            }
+          })
+        }
+      })
       //删除一篇文章
       collection.remove(query, { w: 1}, function (err) {
         mongodb.close();
@@ -345,7 +377,7 @@ Post.reprint = function (reprintFrom, reprintTo, callback) {
         article = {
           name: reprintTo.name,
           avatar: reprintTo.avatar,
-          time: doc.time,
+          time: time,
           title: (doc.title.search(/[转载]/) > -1) ? doc.title : '[转载]' + doc.title,
           tags: ["转载"],
           content: doc.content,
@@ -374,7 +406,6 @@ Post.reprint = function (reprintFrom, reprintTo, callback) {
         collection.insert(article, {safe: true}, function (err, res) {
           mongodb.close();
           if (err) return callback(err);
-          console.log(res)
           callback(null, res.ops[0]);
         });
       })

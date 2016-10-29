@@ -23,6 +23,13 @@
             <% }) %>
             <% } %>
             阅读：<%= article.pageview %> | 评论：<%= article.comments.length %>
+            转载：
+            <% if (article.reprintInfo.reprintTo) { %>
+              <%= article.reprintInfo.reprintTo.length %>
+            <% } else { %>
+              <%= 0 %>
+            <% } %>
+            
             <% if (user && (user.name == article.name)) {%>
             <span><a class="article-edit blue-link" href="/edit/<%= article.name %>/<%= article.time.day %>/<%= article.title %>">编辑</a></span>
             <span><a class="article-edit red-link" href="/remove/<%= article.name %>/<%= article.time.day %>/<%= article.title %>">删除</a></span>
@@ -47,6 +54,10 @@
             <% if (flag) { %>
               <span><a class="article-edit blue-link" href="/reprint/<%= article.name %>/<%= article.time.day %>/<%= article.title %>">转载</a></span>
             <% }%>
+
+            <% if (article.reprintInfo.reprintFrom) { %>
+              <span><a class="article-edit blue-link" href="/u/<%= article.reprintInfo.reprintFrom.name %>/<%= article.reprintInfo.reprintFrom.day %>/<%= article.reprintInfo.reprintFrom.title %>">原文链接</a></span>
+            <% } %>
 
           </div>
           <div class="article-content">
