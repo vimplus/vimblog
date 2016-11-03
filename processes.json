@@ -1,0 +1,12 @@
+{
+  "apps": [{
+      "name": "vimblog",
+      "script": "app.js",
+      "watch": "true",
+      "node_args": "--hammony",
+      "env": {
+        "PORT": 3060,
+        "DEBUG": "*"
+      }
+    }]
+}

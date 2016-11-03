@@ -1,94 +1,75 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
+var koa = require('koa');
+var logger = require('koa-logger');
+var mongo = require('koa-mongo');
+var session = require('koa-session');
+var flash = require('koa-flash');
+var render = require('koa-ejs');
+var serve = require('koa-static');
+var bodyParser = require('koa-bodyparser');
+
+/*var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var flash = require('connect-flash');*/
 
 var routes = require('./routes/index');
-var config = require('./config/config');
-var mongodb = require('./config/mongoose');
-var flash = require('connect-flash');
+var config = require('./config/config.json');
+var exception = require('./libs/exception');
 
 var fs = require('fs');
 var accessLog = fs.createWriteStream('access.log', {flags: 'a'});
 var errorLog = fs.createWriteStream('error.log', {flags: 'a'});
 
-var db = mongodb();
-var app = express();
+//var db = mongodb();
+var app = koa();
+app.keys = config.keys;
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+var CONFIG = {
+  key: 'koa:sess', /** (string) cookie key (default is koa:sess) */
+  maxAge: 86400000, /** (number) maxAge in ms (default is 1 days) */
+  overwrite: true, /** (boolean) can overwrite or not (default true) */
+  httpOnly: true, /** (boolean) httpOnly or not (default true) */
+  signed: true, /** (boolean) signed or not (default true) */
+};
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger());
+//app.use(logger({stream: accessLog}));
+app.use(bodyParser());
+app.use(session(app));
 app.use(flash());
-app.use(logger('dev'));
-app.use(logger({stream: accessLog}));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(mongo(config.mongo));
+app.use(serve(__dirname + '/public'));
 
-app.use(function (err, req, res, next) {
-  var meta = '[' + new Date() + '] ' + req.url + '\n';
-  errorLog.write(meta + err.stack + '\n');
-  next();
-});
-
-app.use(session({
-  secret: config.cookieSecret,
-  key: config.db, //cookie name
-  cookie: {maxAge: 1000 * 60 * 60 * 24 * 30}, //30days
-  store: new MongoStore({
-    db: config.db,
-    host: config.host,
-    port: config.port,
-    url: config.mongodb
-  })
-}));
+app.use(function* (next) {
+  try {
+    yield next;
+  } catch (err) {
+    switch (err.code) {
+      case exception.RequestError:
+        this.flash = err.message;
+        this.redirect('back');
+        break;
+      case exception.NotFound:
+        this.redirect('/404');
+        break;
+      case exception.DBError:
+      case exception.ServerError:
+        this.flash = err.message;
+        this.redirect('/');
+        break;
+      default:
+        this.flash = err.message;
+        this.redirect('/');
+    }
+  }
+})
 
 routes(app);
 
-// catch 404 and forward to error handler
-/*app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});*/
-app.use(function (req, res) {
-  res.render('404', {
-    title: '404',
-    user: req.session.user
-  })
+var port = process.env.port || config.app;
+app.listen(port, function () {
+  console.log('App listening on port:' + port);
 })
-
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
-
-
-module.exports = app;

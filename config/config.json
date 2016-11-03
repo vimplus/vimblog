@@ -1,0 +1,8 @@
+{
+  "app": 3060,
+  "keys": ["vimblog"],
+  "mongo": {
+    "host": "localhost",
+    "port": 27017
+  }
+}
