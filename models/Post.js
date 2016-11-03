@@ -56,10 +56,10 @@ exports.getList = function (mongo, name, page) {
 
         list.forEach(function (doc) {
           doc.content = marked(doc.content);
-          doc.time = moment(doc.time).format('YYYY-MM-DD HH:mm');
-          doc.comments.forEach(function (comment) {
+          //doc.time = moment(doc.time).format('YYYY-MM-DD HH:mm');
+          /*doc.comments.forEach(function (comment) {
             comment.time = moment(comment.time).format('YYYY-MM-DD HH:mm');
-          })
+          })*/
           callback(null, list);
         })
       })
@@ -89,9 +89,9 @@ exports.getArchive = function (mongo) {
       .sort({time: -1})
       .toArray(function (err, list) {
         if (err) return callback(exception(exception.DBError, err.message));
-        list.forEach(function (doc) {
+        /*list.forEach(function (doc) {
           doc.time = moment(doc.time).format('YYYY-MM-DD');
-        });
+        });*/
         callback(null, list);
       })
   }
@@ -109,7 +109,7 @@ exports.getTags = function (mongo) {
   }
 }
 //根据标签获取所有的文章
-exports.getTag = function (mongo, tag) {
+exports.getListByTag = function (mongo, tag) {
   return function (callback) {
     mongo
       .db('vimblog')
@@ -117,9 +117,9 @@ exports.getTag = function (mongo, tag) {
       .find({"tags": tag}, {"title": 1, "time": 1})
       .toArray(function (err, list) {
         if (err) return callback(exception(exception.DBError, err.message));
-        list.forEach(function (doc) {
+        /*list.forEach(function (doc) {
           doc.time = moment(doc.time).format('YYYY-MM-DD');
-        })
+        })*/
         callback(null, list);
       })
   }
@@ -134,9 +134,9 @@ exports.search = function (mongo, keyword) {
       .find({"title": pattern}, {"time": 1, "title": 1})
       .toArray(function (err, list) {
         if (err) return callback(exception(exception.DBError, err.message));
-        list.forEach(function (doc) {
+        /*list.forEach(function (doc) {
           doc.time = moment(doc.time).format('YYYY-MM-DD');
-        })
+        })*/
         callback(null, list);
       })
   }
@@ -147,14 +147,15 @@ exports.findById = function (mongo, id) {
     mongo
       .db('vimblog')
       .collection('articles')
-      .findAndModify({"_id": new ObjectID(id)}, [], {"$inc": {pageview: 1}}, {new: true}, function (err, doc) {
+      .findAndModify({"_id": new ObjectID(id)}, [], {"$inc": {pageview: 1}}, {new: true}, function (err, res) {
         if (err) return callback(exception(exception.DBError, err.message));
-        if (!doc) return callback(exception(exception.NotFound, 'NotFound' + id));
-        doc.content = marked(doc.content);
-        doc.time = moment(doc.time).format('YYYY-MM-DD HH:mm:ss');
+        if (!res) return callback(exception(exception.NotFound, 'NotFound' + id));
+        var doc = res.value;
+        doc.content = marked(doc.content || '');
+        //doc.time = moment(doc.time).format('YYYY-MM-DD HH:mm:ss');
         doc.comments.forEach(function (comment) {
-          comment.content = marked(comment.content);
-          comment.time = moment(comment.time).format('YYYY-MM-DD HH:mm:ss');
+          comment.content = marked(comment.content || '');
+          //comment.time = moment(comment.time).format('YYYY-MM-DD HH:mm:ss');
         })
         callback(null, doc);
       })

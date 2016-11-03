@@ -172,7 +172,7 @@ module.exports = function (app) {
   }))
 
   //通过标签获取文章列表
-  app.use(route.get('tags/:tag', function* (tag) {
+  app.use(route.get('/tags/:tag', function* (tag) {
     var list = yield Post.getListByTag(this.mongo, tag);
 
     yield this.render('tag', {
@@ -214,8 +214,8 @@ module.exports = function (app) {
   }));
   //根据id获取一篇文章
   app.use(route.get('/p/:id', function* (id) {
-    var article = yield Post.getById(this.mongo, id);
-
+    var article = yield Post.findById(this.mongo, id);
+    console.log('文章：'+article)
     yield this.render('article', {
       title: article.title,
       article: article,

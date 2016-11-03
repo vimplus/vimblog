@@ -1,17 +1,12 @@
+var path = require('path');
 var koa = require('koa');
 var logger = require('koa-logger');
 var mongo = require('koa-mongo');
-var session = require('koa-session');
+var session = require('koa-generic-session');
 var flash = require('koa-flash');
 var render = require('koa-ejs');
 var serve = require('koa-static');
 var bodyParser = require('koa-bodyparser');
-
-/*var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
-var flash = require('connect-flash');*/
 
 var routes = require('./routes/index');
 var config = require('./config/config.json');
@@ -21,24 +16,21 @@ var fs = require('fs');
 var accessLog = fs.createWriteStream('access.log', {flags: 'a'});
 var errorLog = fs.createWriteStream('error.log', {flags: 'a'});
 
-//var db = mongodb();
 var app = koa();
 app.keys = config.keys;
 
-var CONFIG = {
-  key: 'koa:sess', /** (string) cookie key (default is koa:sess) */
-  maxAge: 86400000, /** (number) maxAge in ms (default is 1 days) */
-  overwrite: true, /** (boolean) can overwrite or not (default true) */
-  httpOnly: true, /** (boolean) httpOnly or not (default true) */
-  signed: true, /** (boolean) signed or not (default true) */
-};
+render(app, {
+  root: path.join(__dirname, 'views'),
+  layout: false,
+  viewExt: 'ejs'
+})
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger());
 //app.use(logger({stream: accessLog}));
 app.use(bodyParser());
-app.use(session(app));
+app.use(session());
 app.use(flash());
 app.use(mongo(config.mongo));
 app.use(serve(__dirname + '/public'));
