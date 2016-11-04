@@ -43,6 +43,7 @@ exports.getList = function (mongo, name, page) {
   if (name) {
     query.name = name;
   }
+  //console.log(query)
   return function (callback) {
     mongo
       .db('vimblog')
@@ -53,7 +54,7 @@ exports.getList = function (mongo, name, page) {
       .limit(10)
       .toArray(function (err, list) {
         if (err) return callback(exception(exception.DBError, err, err.message));
-
+        //console.log(list)
         list.forEach(function (doc) {
           doc.content = marked(doc.content);
           //doc.time = moment(doc.time).format('YYYY-MM-DD HH:mm');
@@ -85,7 +86,7 @@ exports.getArchive = function (mongo) {
     mongo
       .db('vimblog')
       .collection('articles')
-      .find({}, {"time": 1, "title": 1})
+      .find({}, {"name": 1, "time": 1, "title": 1})
       .sort({time: -1})
       .toArray(function (err, list) {
         if (err) return callback(exception(exception.DBError, err.message));
@@ -159,6 +160,31 @@ exports.findById = function (mongo, id) {
         })
         callback(null, doc);
       })
+  }
+}
+//根据用户名，日期，标题获取一篇文章
+exports.findByTitle = function (mongo, name, day, title) {
+  var query = {
+    "name": name,
+    "time.day": day,
+    "title": title,
+  }
+  console.log(query)
+  return function (callback) {
+    mongo
+      .db('vimblog')
+      .collection('articles')
+      .findAndModify(query, [], {"$inc": {pageview: 1}}, {new: true}, function (err, res) {
+        if (err) return callback(exception(exception.DBError, err.message));
+        if (!res) return callback(exception(exception.NotFound, 'NotFound' + id));
+        var doc = res.value;
+        doc.content = marked(doc.content || '');
+        doc.comments.forEach(function (comment) {
+          comment.content = marked(comment.content || '');
+        })
+        callback(null, doc);
+      })
+
   }
 }
 //提交评论

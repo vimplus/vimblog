@@ -215,7 +215,16 @@ module.exports = function (app) {
   //根据id获取一篇文章
   app.use(route.get('/p/:id', function* (id) {
     var article = yield Post.findById(this.mongo, id);
-    console.log('文章：'+article)
+    yield this.render('article', {
+      title: article.title,
+      article: article,
+      user: this.session.user,
+      flash: this.flash
+    })
+  }));
+  //根据用户名、日期、标题获取一篇文章
+  app.use(route.get('/u/:name/:day/:title', function* (name, day, title) {
+    var article = yield Post.findByTitle(this.mongo, name, day, title);
     yield this.render('article', {
       title: article.title,
       article: article,
