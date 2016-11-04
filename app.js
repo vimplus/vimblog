@@ -8,14 +8,16 @@ var render = require('koa-ejs');
 var serve = require('koa-static');
 var bodyParser = require('koa-bodyparser');
 
-var routes = require('./routes/index');
+var routes = require('./app/routes/index');
 var config = require('./config/config.json');
 var exception = require('./libs/exception');
+var mongoose = require('./config/mongoose');
 
 var fs = require('fs');
 var accessLog = fs.createWriteStream('access.log', {flags: 'a'});
 var errorLog = fs.createWriteStream('error.log', {flags: 'a'});
 
+var db = mongoose();
 var app = koa();
 app.keys = config.keys;
 

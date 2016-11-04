@@ -13,5 +13,5 @@ var PostSchema = new Schema({
   pageview: {type: Number, default: 0}
 })
 
-var Post = mongoose.model('Post', PostSchema);
-models.exports = Post;
+var PostModel = mongoose.model('articles', PostSchema);
+module.exports = PostModel;
