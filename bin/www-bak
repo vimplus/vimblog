@@ -7,14 +7,14 @@
 var app = require('../app');
 var debug = require('debug')('vimblog:server');
 var http = require('http');
-var config = require('./config/config')
+var config = require('../app/config/config')
 
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || config.port);
-app.set('port', port);
+//app.set('port', port);
 
 /**
  * Create HTTP server.

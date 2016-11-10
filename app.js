@@ -9,7 +9,7 @@ var serve = require('koa-static');
 var bodyParser = require('koa-bodyparser');
 
 var routes = require('./app/routes/index');
-var config = require('./app/config/config.json');
+var config = require('./app/config/config');
 var exception = require('./app/libs/exception');
 var mongoose = require('./app/config/mongoose');
 
@@ -63,7 +63,7 @@ app.use(function* (next) {
 
 routes(app);
 
-var port = process.env.port || config.app;
+var port = process.env.port || config.port;
 app.listen(port, function () {
   console.log('App listening on port:' + port);
 })

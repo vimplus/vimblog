@@ -27,7 +27,7 @@ module.exports = {
   },
   // 2* 为权限报错信息
   noAccess: {
-    code: 10004,
+    code: 20001,
     desc: '暂时无权访问'
   }
 }
