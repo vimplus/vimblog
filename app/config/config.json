@@ -2,7 +2,7 @@
   "app": 3060,
   "keys": ["vimblog"],
   "mongo": {
-    "host": "localhost",
+    "host": "127.0.0.1",
     "port": 27017
   }
 }

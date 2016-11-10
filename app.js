@@ -9,9 +9,9 @@ var serve = require('koa-static');
 var bodyParser = require('koa-bodyparser');
 
 var routes = require('./app/routes/index');
-var config = require('./config/config.json');
-var exception = require('./libs/exception');
-var mongoose = require('./config/mongoose');
+var config = require('./app/config/config.json');
+var exception = require('./app/libs/exception');
+var mongoose = require('./app/config/mongoose');
 
 var fs = require('fs');
 var accessLog = fs.createWriteStream('access.log', {flags: 'a'});
@@ -22,7 +22,7 @@ var app = koa();
 app.keys = config.keys;
 
 render(app, {
-  root: path.join(__dirname, 'views'),
+  root: path.join(__dirname, '/client/views'),
   layout: false,
   viewExt: 'ejs'
 })
@@ -35,7 +35,7 @@ app.use(bodyParser());
 app.use(session());
 app.use(flash());
 app.use(mongo(config.mongo));
-app.use(serve(__dirname + '/public'));
+//app.use(serve(__dirname + '/public'));
 
 app.use(function* (next) {
   try {

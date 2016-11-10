@@ -1,7 +1,8 @@
 var Post = require('../models/post.model.js');
+var statusCode = require('../config/statusCode');
 
 module.exports = {
-  save: function () {
+  save: function* () {
 
   },
   getList: function* (name) {
@@ -14,14 +15,14 @@ module.exports = {
     var list = yield Post.find().sort({time: -1}).skip((page - 1) * pageSize).limit(pageSize);
     var count = yield Post.count();
     this.body = {
-      code: 10000,
+      code: statusCode.success.code,
       data: {
         list: list,
         page: page,
         size: pageSize,
         total: count
       },
-      message: 'success'
+      message: statusCode.success.desc
     };
   }
 }
